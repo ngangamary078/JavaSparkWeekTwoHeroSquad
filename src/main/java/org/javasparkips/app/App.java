@@ -1,6 +1,4 @@
 
-// src/main/java/com/example/app/App.java
-
 package org.javasparkips.app;
 
 import org.javasparkips.app.models.Hero;
