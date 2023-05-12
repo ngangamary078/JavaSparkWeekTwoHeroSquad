@@ -1,24 +1,30 @@
-// src/main/java/com/example/app/model/Squad.java
-
 package org.javasparkips.app.models;
+import org.sql2o.Sql2o;
+import org.sql2o.Connection;
 
 public class Squad {
-    private int maxSize;
+    private final static int maxSize = 5;
+    private int id;
     private String name;
     private String cause;
 
-    public Squad(int maxSize, String name, String cause) {
-        this.maxSize = maxSize;
+    public Squad(String name, String cause) {
         this.name = name;
         this.cause = cause;
     }
+
+    // Getter and setter methods
 
     public int getMaxSize() {
         return maxSize;
     }
 
-    public void setMaxSize(int maxSize) {
-        this.maxSize = maxSize;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,5 +42,16 @@ public class Squad {
     public void setCause(String cause) {
         this.cause = cause;
     }
-// Getter and setter methods
+
+    // Other methods
+
+    public static Squad getSquadById(int id, Sql2o sql2o) {
+        String query = "SELECT * FROM squads WHERE id = :id";
+
+        try (Connection connection = sql2o.open()) {
+            return connection.createQuery(query)
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Squad.class);
+        }
+    }
 }
