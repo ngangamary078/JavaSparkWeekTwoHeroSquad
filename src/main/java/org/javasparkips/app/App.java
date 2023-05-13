@@ -3,11 +3,14 @@ package org.javasparkips.app;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.io.FileTemplateLoader;
 import org.javasparkips.app.models.Hero;
 import org.javasparkips.app.models.Squad;
 import com.google.gson.Gson;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+
+import java.io.File;
 import java.util.*;
 
 import static spark.Spark.*;
@@ -43,6 +46,7 @@ public class App {
     public static void main(String[] args) {
         port(4567);
 
+
         // Load configuration
         Properties config = ConfigLoader.loadConfig();
         String dbUrl = config.getProperty("db.url");
@@ -54,6 +58,11 @@ public class App {
 
         // Initialize Handlebars
         handlebars = new Handlebars();
+
+        //initialize Handlebars with the template directory path
+
+        File templateDir = new File("src/main/resources/templates");
+        handlebars = new Handlebars(new FileTemplateLoader(templateDir));
 
         // Define routes
         get("/", (request, response) -> {
